@@ -1,0 +1,101 @@
+<!DOCTYPE h
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Lilium</title>
+		<script src="vue.js"></script>
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+		<!-- 引入组件库 -->
+		<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			  <el-button :plain="true" @click="open2">成功</el-button>
+			  <el-button :plain="true" @click="open3">警告</el-button>
+			  <el-button :plain="true" @click="open">消息</el-button>
+			  <el-button :plain="true" @click="open4">错误</el-button>
+			<div>
+				<table>
+					<tbody>
+					<tr is="row"></tr>
+					<tr is="row"></tr>
+					<tr is="row"></tr>
+					</tbody>
+				</table>
+			</div>
+			<count-item @ojbk="o" ref="one"></count-item>
+			<br />
+			<count-item @ojbk="o"  ref="two"></count-item>
+			<div>
+				{{sum}}
+			</div>
+		</div>
+		<script>
+	  
+			
+			Vue.component('row',{
+				template:'<tr><td>this is a row</td></tr>'
+			})
+			
+			
+			Vue.component('countItem',{
+				template:'<span @click="handleClick">{{data}}</span>',
+				data:function(){
+					return {
+						data:0
+					}
+				},
+				methods:{
+					handleClick:function(){
+						
+						this.data++;
+						this.$emit('ojbk');
+					}
+				}
+			})
+			
+			
+			new Vue({
+				el:'#app',
+				data:{
+					firstName:'',
+					lastName:'',
+					count:0,
+					show:true,
+					list:[1,2],
+					val:'',
+					sum:0
+				},
+			methods:{
+					o(){
+				
+						this.sum=this.$refs.one.data+this.$refs.two.data
+					},
+				  open() {
+						this.$message('这是一条消息提示');
+							},
+				  open2() {
+					this.$message({
+					  message: '恭喜你，这是一条成功消息',
+					  type: 'success'
+					});
+				  },
+
+				  open3() {
+					this.$message({
+					  message: '警告哦，这是一条警告消息',
+					  type: 'warning'
+					});
+				  },
+
+				  open4() {
+					this.$message.error('错了哦，这是一条错误消息');
+				  }
+				}
+				
+			})
+			
+		</script>
+	</body>
+</html>

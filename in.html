@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="vue.js"></script>
+	</head>
+	<body>
+		
+		
+  <div id="father">
+
+ 
+    <!--第四次使用：不使用其提供的数据, 作用域插槽退变成匿名插槽-->
+    <child>
+			
+     <template slot="slotA" slot-scope="scope">
+			 <h1> {{scope.item}} </h1>
+		 </template>
+		
+		 <button slot="sloB" @click="change()">变化</button>
+	
+    </child>
+		
+  </div>
+
+	</body>
+	<script>
+		
+		 Vue.component('child',
+		 {template:'<div><h3>这里是子组件</h3><slot name="slotA" v-for="item in data" :item=item></slot><slot name="sloB"></slot><button  @click="change()">变化</button></div>',
+		 data: function(){ 
+			return {
+					data: ['zhangsan','lisi','wanwu','zhaoliu','tianqi','xiaoba']
+				}
+			},
+				methods:{
+					change:function(){
+						var temp=this.data
+						this.data[0]='lilium'
+						alert(this.data[0])
+						alert(temp[0])
+					}
+				}
+			}) 
+		 new Vue({
+						el:'#father',
+						methods:{
+								change:function(){
+									
+									alert('ob')
+								}
+							}
+						
+				 })
+
+	</script>
+</html>

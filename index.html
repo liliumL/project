@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Lilium</title>
+		<script src="vue.js"></script>
+	</head>
+	<body>
+		<div id="app">
+	
+			<!-- <todo-one></todo-one>
+			<todo-two></todo-two> -->
+			<transition name="lilium">
+			<component :is="type"></component>
+			</transition>
+			<button @click="cl">change</button>
+			<br />
+			
+			
+			
+			{{ v.foo }}
+			 <button v-on:click="v.foo = 'baz'"
+			          :style="limbo">Change it</button>
+			<div v-if="show">
+				姓<input v-model="firstName" @click="handleref"/>
+				名<input v-model="lastName" />
+				<div>{{fullName}}</div>
+				{{count}}
+			</div>
+ 			<button @click="handle">toglle</button>
+			 <br/> 
+			 <input v-model="val"/>
+			<ul>
+			<todo-item 
+			v-for="(item,index) in  list"
+			:key="index"
+			:content="item"
+			:index="index"
+			ref='refName'
+			@delete="deletehandle">
+				
+			</todo-item> 
+			</ul>
+			<input v-model="query"/>
+			<button @click="subhandle">sub</button> 
+			<button @click="subhandlee">subb</button> 
+			<button @click="stime">subbb</button> 
+			<button @click="sstime">subbbb</button> 
+			<button @click="doSearch">search</button> 
+			<div>
+				<chired content="lilium"></chired>
+				<chired content="limbo"></chired>
+			</div>
+		</div>
+
+		<script>
+			Vue.component('todo-one',{
+				template:'<div>todo-one</div>'
+			})
+			Vue.component('todo-two',{
+				template:'<div>todo-two</div>'
+			})
+			
+	    	Vue.component('todo-item',{
+				props:['content','index'],
+				template:'<li @click="handledelete" >{{content}}</li>',
+				data: function(){
+					return{
+						ok:'afaf'
+					}
+				},
+				methods:{
+					
+					handledelete:function(){
+						
+						this.$emit('delete',this.index);
+		
+					}
+					}
+			}) 
+			
+			Vue.prototype.bus=new Vue()
+			
+			Vue.component('chired',
+			{
+				template:'<div @click="handleClick">{{mycontent}}</div>',
+				data: function()
+				{
+					return {
+						mycontent: this.content
+						}
+				},
+				props: ['content'],
+				methods: {
+					handleClick: function(){
+						this.bus.$emit('change',this.mycontent)
+					}
+				},
+				mounted: function(){
+					var _this=this
+					this.bus.$on('change',function(msg){
+						_this.mycontent=msg
+					})
+				}
+			
+			}
+			)
+			
+			var obj={
+				foo:'bar'}
+		
+		
+			
+			var app = new Vue({
+				el:'#app',
+				data:{
+					query:'',
+					alarmTimer:'',
+					firstName:'',
+					lastName:'',
+					count:0,
+					show:true,
+					list:[1,2],
+					val:'',
+					v:obj,
+					limbo:{
+						color:'red'
+					},
+					type:'todo-one'
+				},
+				computed:{
+					fullName:function(){
+						return this.firstName+ " " +this.lastName
+					}},
+				watch:{
+					fullName:function(){
+						this.count ++;
+					}
+				},
+				methods:{
+					handle:function(){
+						
+						this.show=!this.show;
+					},
+					stime:function(){
+						
+				
+						this.alarmTimer=setInterval(this.loadAlarmDate, 2000);
+					},
+					sstime:function(){
+						
+						clearInterval(this.alarmTimer);
+						
+					},
+					loadAlarmDate() {
+						alert('ojbk')
+					},
+					subhandle:function(){
+						this.list.push(this.val)
+					},
+					subhandlee:function(){
+						var a = [];
+						var b = [];
+						for (var i = 0; i < 10; i++) {
+						  a[i] = function () {
+							console.log(i);
+						  };
+						}
+						for (let j = 0; j < 10; j++) {
+						  b[j] = function () {
+							console.log(j);
+						  };
+						}
+						a[6]()
+						b[6]()
+					},
+					doSearch() {
+                    
+                   
+				    window.location.href = "https://s.2.taobao.com/list/list.htm?q=" + this.query;
+					}
+					,
+					deletehandle:function(index){
+						this.list[index]=1
+						
+						this.list.splice(index,1)
+					},
+					handleref:function(){
+						alert(this.$refs.refName[1].ok);
+						debugger
+					},
+					cl: function(){
+							this.type = this.type === 'todo-one' ? 'todo-two' : 'todo-one'
+					}
+				}
+				
+			})
+			
+		</script>
+		<style>
+				
+			.lilium-enter,
+			.lilium-leave-to{
+				opacity: 0;
+			}
+			.lilium-enter-active,
+			.lilium-leave-active{
+				transition: opacity 1s;
+			}
+		</style>
+	</body>
+</html>
